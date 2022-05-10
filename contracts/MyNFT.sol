@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract MyNFT is ERC721URIStorage {
     uint256 public tokenId;
-    event CreatedNFT(uint256 indexed tokenId, string tokenURI);
+    event CreatedMyNFT(uint256 indexed tokenId, string tokenURI);
 
     constructor() ERC721("MyNFT", "MNFT") {
-
+        tokenId = 0;
     }
 
     function create(string memory _svg) public {
@@ -20,8 +20,8 @@ contract MyNFT is ERC721URIStorage {
         // Token URI
         string memory tokenURI = toTokenURI(imageURI);
         _setTokenURI(tokenId, tokenURI);
-        emit CreatedNFT(tokenId, tokenURI);
         tokenId = tokenId + 1;
+        emit CreatedMyNFT(tokenId, _svg);
     }
 
     function toImageURI(string memory _svg) public pure returns (string memory) {
@@ -33,14 +33,14 @@ contract MyNFT is ERC721URIStorage {
     }
 
     function toTokenURI(string memory _imageURI) public pure returns (string memory) {
-        string memory baseURL = "data:application/json;base64";
+        string memory baseURL = "data:application/json;base64,";
         return string(abi.encodePacked(
             baseURL,
             Base64.encode(
                 bytes(abi.encodePacked(
-                    '{"name": "Carmhack NFT"',
-                    '"description": "On-chain NFT of carmhack logo',
-                    '"attributes": ""',
+                    '{"name": "Carmhack NFT",',
+                    '"description": "On-chain NFT of carmhack logo,',
+                    '"attributes": "",',
                     '"image": "', _imageURI, '"}'
                 ))
             )
