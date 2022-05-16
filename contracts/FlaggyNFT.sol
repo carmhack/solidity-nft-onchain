@@ -5,21 +5,18 @@ import "hardhat/console.sol";
 import "base64-sol/base64.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract MyNFT is ERC721URIStorage {
+contract FlaggyNFT is ERC721URIStorage {
     uint256 public tokenId;
     event CreatedMyNFT(uint256 indexed tokenId, string tokenURI);
 
-    constructor() ERC721("MyNFT", "MNFT") {
+    constructor() ERC721("Flaggy", "FLGY") {
         tokenId = 0;
     }
 
     function create(string memory _svg) public {
         _safeMint(msg.sender, tokenId);
-        // Image URI
         string memory imageURI = toImageURI(_svg);
-        // Token URI
-        string memory tokenURI = toTokenURI(imageURI);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, toTokenURI(imageURI));
         tokenId = tokenId + 1;
         emit CreatedMyNFT(tokenId, _svg);
     }
@@ -38,10 +35,12 @@ contract MyNFT is ERC721URIStorage {
             baseURL,
             Base64.encode(
                 bytes(abi.encodePacked(
-                    '{"name": "Carmhack NFT",',
-                    '"description": "On-chain NFT of carmhack logo,',
+                    '{"name": "FlaggyNFT",',
+                    '"description": "On-chain flag NFT",',
                     '"attributes": "",',
-                    '"image": "', _imageURI, '"}'
+                    '"image": "',
+                    _imageURI,
+                    '"}'
                 ))
             )
         ));
